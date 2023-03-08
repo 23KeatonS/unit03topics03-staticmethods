@@ -4,29 +4,39 @@ public class TimeDuration {
     private int hours;
     private int minutes;
     private int seconds;
+    private static int numTimes = 0;
 
     public TimeDuration(int hours,int minutes,int seconds){
         this.hours=hours;
         this.minutes=minutes;
         this.seconds=seconds;
+        numTimes++;
 
 
     }
 
 
 
+
     public static TimeDuration parseFromString(String str){
         
-        String stringHours;
-        String stringMinutes;
-        String stringSeconds;
+
+        int realHours = 0;
+        int realMinutes = 0;
+        int realSeconds = 0;
 
         if(str.indexOf("h")!=-1){
             int hoursEndIndex = str.indexOf("h");
             while(!stringIsNumber(str.substring(hoursEndIndex, hoursEndIndex+1))){
                 hoursEndIndex--;
             }
-            int realHours = Integer.parseInt(str.substring(hoursEndIndex,hoursEndIndex+1));
+            hoursEndIndex++;
+            int hoursStartIndex = hoursEndIndex-1;
+            while(stringIsNumber(str.substring(hoursStartIndex,hoursStartIndex+1))){
+                hoursStartIndex--;
+            }
+            hoursStartIndex++;
+            realHours = Integer.parseInt(str.substring(hoursStartIndex,hoursEndIndex));
         }
 
         if(str.indexOf("m")!=-1){
@@ -34,16 +44,35 @@ public class TimeDuration {
             while(!stringIsNumber(str.substring(minutesEndIndex, minutesEndIndex+1))){
                 minutesEndIndex--;
             }
-            int minutesStartIndex = minutesEndIndex;
-            while(stringIsNumber(str.substring(minutesStartIndex,minutesStartIndex))){
+            minutesEndIndex++;
+            int minutesStartIndex = minutesEndIndex-1;
+            while(stringIsNumber(str.substring(minutesStartIndex,minutesStartIndex+1))){
                 minutesStartIndex--;
             }
             minutesStartIndex++;
-            int realMinutes = Integer.parseInt(str.substring(minutesStartIndex,minutesEndIndex));
-            System.out.println(realMinutes);
+            realMinutes = Integer.parseInt(str.substring(minutesStartIndex,minutesEndIndex));
+        }
+
+
+        if(str.indexOf("s")!=-1){
+            int secondsEndIndex = str.indexOf("s");
+            while(!stringIsNumber(str.substring(secondsEndIndex, secondsEndIndex+1))){
+                secondsEndIndex--;
+            }
+            System.out.println(secondsEndIndex);
+            secondsEndIndex++;
+            int secondsStartIndex = secondsEndIndex-1;
+            while(stringIsNumber(str.substring(secondsStartIndex,secondsStartIndex+1))){
+                secondsStartIndex--;
+            }
+            System.out.println(secondsStartIndex);
+            secondsStartIndex++;
+            realSeconds = Integer.parseInt(str.substring(secondsStartIndex,secondsEndIndex));
+            System.out.println(realSeconds);
+            
         }
         
-        return new TimeDuration(3,3,3);
+        return new TimeDuration(realHours,realMinutes,realSeconds);
     }
 
 
@@ -65,6 +94,13 @@ public class TimeDuration {
             return false;
         }
     }
+
+
+    public int getNumTimes(){
+        return numTimes;
+    }
+
+
 
     public String ToString(){
         return "";
