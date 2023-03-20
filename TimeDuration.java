@@ -87,13 +87,16 @@ public class TimeDuration {
             int [] results = NumAfterColon(str);
             realSeconds = results[0];
             lastIndex = results[1];
+            if(wholeStringIsNumber(str.substring(0,lastIndex))){
+                realMinutes = Integer.parseInt(str.substring(0,lastIndex));
+            }
 
         }
-        if(str.indexOf(":")!=-1){
+        if(str.substring(0,lastIndex).indexOf(":")!=-1){
             int[] results = NumAfterColon(str.substring(0,lastIndex));
             realMinutes = results[0];
             lastIndex = results[1];
-            if(stringIsNumber(str.substring(0,1))){
+            if(wholeStringIsNumber(str.substring(0,lastIndex))){
                 realHours = Integer.parseInt(str.substring(0,lastIndex));
             }
             
@@ -126,6 +129,14 @@ public class TimeDuration {
             return false;
         }
     }
+    private static boolean wholeStringIsNumber(String s){
+        for(int i = 0;i<s.length();i++){
+            if(!stringIsNumber(s.substring(i,i+1))){
+                return false;
+            }
+        }
+        return true;
+    }
 
 
     public int getNumTimes(){
@@ -134,8 +145,25 @@ public class TimeDuration {
 
 
 
-    public String ToString(){
-        return "";
+    public String toString(){
+        String result = "";
+        if(this.hours<10){
+            result+="0";
+        }
+        result+=this.hours;
+        result+=":";
+        if(this.minutes<10){
+            result+="0";
+        }
+        result+=this.minutes;
+        result+=":";
+
+        if(this.seconds<10){
+            result+="0";
+        }
+        result+=this.seconds;
+
+        return result;
     }
 
 
@@ -147,11 +175,11 @@ public class TimeDuration {
         System.out.println("Enter a time: ");
         String userInput = scanner.nextLine();
         TimeDuration time1 = parseFromString(userInput);
+        System.out.println(time1);
+        System.out.println(time1.getNumTimes());
         
-        System.out.println(time1.hours);
-        System.out.println(time1.minutes);
-        System.out.println(time1.seconds);
-        System.out.println(NumAfterColon(":1234:123:12")[0]);
+        
+        
 
         
     }
